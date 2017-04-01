@@ -27,35 +27,34 @@ int main(int argc,char** argv){
     exit(1);
   }
   printf("waiting for a message\n");
- 
-    struct sockaddr_in client;
-    socklen_t sizeClient=sizeof(client);
-    int descClient=accept(socketListen,(struct sockaddr*)&client,&sizeClient);
-    if(-1==descClient){
-      fprintf(stderr,"problème accept : %s.\n",strerror(errno));
-      exit(1);
-    } 
-    printf("waiting for a message\n");
+  
+  struct sockaddr_in client;
+  socklen_t sizeClient=sizeof(client);
+  int descClient=accept(socketListen,(struct sockaddr*)&client,&sizeClient);
+  if(-1==descClient){
+    fprintf(stderr,"problème accept : %s.\n",strerror(errno));
+    exit(1);
+  } 
+  printf("waiting for a message\n");
    
-    char buffer[500];
-    ssize_t res=recv(descClient,buffer,sizeof(buffer),0);
-    if(-1==res){
-      fprintf(stderr,"problème recv : %s.\n",strerror(errno));
-      exit(1);
-    } 
-    char msg[res];
-    int i=0;
-    while(i<res){msg[i]=buffer[i];++i;}
-    printf("%s\n",msg);
-    int sizeMsg[1];
-    sizeMsg[1]=res;
-    ssize_t res2=send(descClient,sizeMsg,sizeof(sizeMsg),0);
-    if(-1==res2){
-      fprintf(stderr,"problème send : %s.\n",strerror(errno));
-      exit(1);
-    }
+  char buffer[500];
+  ssize_t res=recv(descClient,buffer,sizeof(buffer),0);
+  if(-1==res){
+    fprintf(stderr,"problème recv : %s.\n",strerror(errno));
+    exit(1);
+  }  
+ char msg[res];
+  int i=0;
+  while(i<res){msg[i]=buffer[i];++i;}
+  printf("%s\n",msg);
+  int sizeMsg[1];
+  sizeMsg[1]=res;
+  ssize_t res2=send(descClient,sizeMsg,sizeof(sizeMsg),0);
+  if(-1==res2){
+    fprintf(stderr,"problème send : %s.\n",strerror(errno));
+    exit(1);
+  }
 
-    close(descListen);
 
   close(descListen);
   close(socketListen);
